@@ -77,6 +77,11 @@ class ImageClient(QWidget):
         self.image_list.itemClicked.connect(self.view_image)
         layout.addWidget(self.image_list)
 
+        # Imagem visualizada
+        self.view_image_label = QLabel("Imagem Visualizada")
+        self.view_image_label.setAlignment(Qt.AlignCenter)
+        layout.addWidget(self.view_image_label)
+
         # Botão para carregar lista de imagens
         self.load_images_button = QPushButton("Carregar Imagens Processadas")
         self.load_images_button.clicked.connect(self.load_processed_images)
@@ -105,13 +110,13 @@ class ImageClient(QWidget):
             self.processed_label.setPixmap(pixmap.scaled(300, 300, Qt.KeepAspectRatio))
 
     def load_processed_images(self):
-            list_images = get_images()
-            if list_images:
-                self.image_list.clear()
-                for image in list_images:
-                    item = QListWidgetItem(image[1])
-                    item.setData(Qt.UserRole, (image[0], image[-1]))
-                    self.image_list.addItem(item)
+        list_images = get_images()
+        if list_images:
+            self.image_list.clear()
+            for image in list_images:
+                item = QListWidgetItem(image[1])
+                item.setData(Qt.UserRole, (image[0], image[-1]))
+                self.image_list.addItem(item)
 
     def view_image(self, item):
         image_id, image_path = item.data(Qt.UserRole)
@@ -119,7 +124,7 @@ class ImageClient(QWidget):
         if response:
             pixmap = QPixmap()
             pixmap.loadFromData(response.content)
-            self.processed_label.setPixmap(pixmap.scaled(300, 300, Qt.KeepAspectRatio))
+            self.view_image_label.setPixmap(pixmap.scaled(300, 300, Qt.KeepAspectRatio))
 
 
 def run_client():
